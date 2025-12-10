@@ -1,100 +1,122 @@
 "use client";
 
+import React from "react";
 import Link from "next/link";
-import { useState } from "react";
-import { motion, AnimatePresence, Variants } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
+import { Car, Menu, X, LogIn } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const navLinks = [
+    { href: "/", label: "Início" },
+    { href: "/instrutores", label: "Buscar Instrutores" },
+    { href: "/#como-funciona", label: "Como Funciona" },
+];
 
 export function Header() {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+    const pathname = usePathname();
 
-    const menuVariants: Variants = {
-        closed: {
-            opacity: 0,
-            x: "100%",
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40
-            }
-        },
-        open: {
-            opacity: 1,
-            x: 0,
-            transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 40
-            }
-        }
-    };
+    // Check if on homepage hero section (only there we want overlay behavior)
+    const isHomepage = pathname === "/";
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="container flex h-14 max-w-screen-2xl items-center justify-between">
-                <Link href="/" className="mr-6 flex items-center space-x-2">
-                    <span className="font-bold inline-block">DrivePRo</span>
-                </Link>
+        <header className="fixed top-0 left-0 right-0 z-50 bg-primary shadow-md">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center justify-between h-16">
+                    {/* Logo */}
+                    <Link href="/" className="flex items-center gap-2 group">
+                        <motion.div
+                            whileHover={{ rotate: 10 }}
+                            className="p-2 bg-white/20 rounded-lg"
+                        >
+                            <Car className="w-5 h-5 text-white" />
+                        </motion.div>
+                        <span className="text-xl font-bold text-white">
+                            Direção <span className="text-success">Pro</span>
+                        </span>
+                    </Link>
 
-                {/* Desktop Nav */}
-                <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-                    <Link href="/#features" className="transition-colors hover:text-primary text-muted-foreground">
-                        Features
-                    </Link>
-                    <Link href="/#pricing" className="transition-colors hover:text-primary text-muted-foreground">
-                        Pricing
-                    </Link>
-                    <Link href="/#testimonials" className="transition-colors hover:text-primary text-muted-foreground">
-                        Testimonials
-                    </Link>
-                </nav>
+                    {/* Desktop Navigation */}
+                    <nav className="hidden md:flex items-center gap-8">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={cn(
+                                    "text-sm font-medium transition-colors hover:text-success",
+                                    pathname === link.href
+                                        ? "text-white"
+                                        : "text-white/80"
+                                )}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                    </nav>
 
-                {/* Mobile Menu Toggle */}
-                <button
-                    className="md:hidden p-2 text-foreground"
-                    onClick={() => setIsOpen(!isOpen)}
-                    aria-label="Toggle Menu"
-                >
-                    {isOpen ? <X size={24} /> : <Menu size={24} />}
-                </button>
+                    {/* Desktop Auth Buttons */}
+                    <div className="hidden md:flex items-center gap-3">
+                        <Link
+                            href="/instrutor"
+                            className="text-sm font-medium text-white/80 transition-colors hover:text-white"
+                        >
+                            Sou Instrutor
+                        </Link>
+                        <Link
+                            href="#login"
+                            className="flex items-center gap-2 px-4 py-2 bg-success text-white rounded-lg font-medium text-sm hover:bg-success/90 transition-colors"
+                        >
+                            <LogIn className="w-4 h-4" />
+                            Entrar
+                        </Link>
+                    </div>
+
+                    {/* Mobile Menu Button */}
+                    <button
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        className="md:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors"
+                    >
+                        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                    </button>
+                </div>
             </div>
 
-            {/* Mobile Menu Overlay */}
-            <AnimatePresence>
-                {isOpen && (
-                    <motion.div
-                        initial="closed"
-                        animate="open"
-                        exit="closed"
-                        variants={menuVariants}
-                        className="fixed inset-y-0 right-0 z-50 w-full bg-background/95 backdrop-blur-xl p-6 sm:w-80 border-l border-border/40 shadow-2xl md:hidden"
+            {/* Mobile Menu */}
+            <motion.div
+                initial={false}
+                animate={isMobileMenuOpen ? { height: "auto", opacity: 1 } : { height: 0, opacity: 0 }}
+                className="md:hidden overflow-hidden bg-primary border-t border-white/10"
+            >
+                <div className="px-4 py-4 space-y-4">
+                    {navLinks.map((link) => (
+                        <Link
+                            key={link.href}
+                            href={link.href}
+                            className="block text-white font-medium hover:text-success transition-colors"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                            {link.label}
+                        </Link>
+                    ))}
+                    <hr className="border-white/20" />
+                    <Link
+                        href="/instrutor"
+                        className="block text-white font-medium hover:text-success transition-colors"
+                        onClick={() => setIsMobileMenuOpen(false)}
                     >
-                        <div className="flex flex-col space-y-8 mt-12">
-                            <Link
-                                href="/#features"
-                                className="text-2xl font-bold transition-colors hover:text-primary"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                Features
-                            </Link>
-                            <Link
-                                href="/#pricing"
-                                className="text-2xl font-bold transition-colors hover:text-primary"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                Pricing
-                            </Link>
-                            <Link
-                                href="/#testimonials"
-                                className="text-2xl font-bold transition-colors hover:text-primary"
-                                onClick={() => setIsOpen(false)}
-                            >
-                                Testimonials
-                            </Link>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                        Sou Instrutor
+                    </Link>
+                    <Link
+                        href="#login"
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-success text-white rounded-lg font-medium hover:bg-success/90 transition-colors"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                        <LogIn className="w-4 h-4" />
+                        Entrar
+                    </Link>
+                </div>
+            </motion.div>
         </header>
     );
 }

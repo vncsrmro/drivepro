@@ -7,23 +7,20 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: {
-    default: "DrivePRo | High-Performance Web Applications",
-    template: "%s | DrivePRo",
+    default: "Direção Pro | Encontre o Melhor Instrutor de Direção",
+    template: "%s | Direção Pro",
   },
-  description: "Experience the future of web development with DrivePRo. Built for speed, designed for impact. Antigravidade architecture for next-gen apps.",
-  keywords: ["Next.js", "React", "High Performance", "Web Development", "SaaS", "Antigravidade"],
+  description: "Hub de aulas de direção. Encontre instrutores certificados, agende suas aulas e realize seu sonho de tirar a CNH com segurança e confiança.",
+  keywords: ["aulas de direção", "instrutor de direção", "CNH", "autoescola", "Americana", "São Paulo", "habilitação"],
   openGraph: {
     type: "website",
-    locale: "en_US",
-    url: "https://drivepro.romeiro.dev",
-    title: "DrivePRo | High-Performance Web Applications",
-    description: "Experience the future of web development with DrivePRo. Built for speed, designed for impact.",
-    siteName: "DrivePRo",
+    locale: "pt_BR",
+    url: "https://direcaopro.com.br",
+    title: "Direção Pro | Encontre o Melhor Instrutor de Direção",
+    description: "Hub de aulas de direção. Encontre instrutores certificados e agende suas aulas com segurança.",
+    siteName: "Direção Pro",
   },
 };
-
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 
 export default function RootLayout({
   children,
@@ -31,13 +28,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={cn("min-h-screen bg-background font-sans antialiased flex flex-col", inter.variable)}>
-        <Header />
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body className={cn("min-h-screen bg-background font-sans antialiased", inter.variable)}>
+        {children}
       </body>
     </html>
   );
