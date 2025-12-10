@@ -486,6 +486,39 @@ export const systemConfig: SystemConfig = {
     precoPlanoOuro: 199,
 };
 
+// ===== INSTRUCTOR FEEDBACK ON STUDENTS =====
+export interface InstructorFeedbackOnStudent {
+    id: string;
+    instrutorId: string;
+    instrutorNome: string;
+    instrutorFoto: string;
+    alunoId: string;
+    data: string;
+    notaGeral: number;
+    nivelConfianca: "iniciante" | "em_evolucao" | "confiante" | "pronto";
+    pontosFortres: string[];
+    pontosAMelhorar: string[];
+    recomendacao: string;
+    aulasRecomendadas: number;
+}
+
+export const avaliacoesInstrutorSobreAluno: InstructorFeedbackOnStudent[] = [
+    {
+        id: "fb1",
+        instrutorId: "1",
+        instrutorNome: "Carlos Silva",
+        instrutorFoto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
+        alunoId: "a1",
+        data: "2024-12-10",
+        notaGeral: 4,
+        nivelConfianca: "em_evolucao",
+        pontosFortres: ["Atenção aos retrovisores", "Controle do volante", "Boa comunicação"],
+        pontosAMelhorar: ["Baliza", "Conversões à esquerda"],
+        recomendacao: "Continue praticando manobras. Recomendo mais 3-5 aulas focadas em baliza antes de marcar a prova.",
+        aulasRecomendadas: 4
+    }
+];
+
 // ===== SCHEDULE =====
 export const getHorariosDisponiveis = (instrutorId: string): DaySchedule[] => {
     const hoje = new Date();
