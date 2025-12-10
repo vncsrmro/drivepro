@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import {
     Crown,
@@ -13,263 +13,393 @@ import {
     BarChart2,
     ArrowRight,
     Sparkles,
-    TrendingUp
+    TrendingUp,
+    Rocket,
+    Diamond,
+    Award,
+    Users,
+    CircleDollarSign,
+    ChevronRight
 } from "lucide-react";
-import { Badge } from "@/components/ui/Badge";
-import { planos } from "@/data/mockData";
-
-const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-        opacity: 1,
-        transition: { staggerChildren: 0.15 }
-    }
-};
-
-const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } }
-};
 
 export default function PlanosInstrutorPage() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end start"]
+    });
+
+    const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
+    const y2 = useTransform(scrollYProgress, [0, 1], [0, -200]);
+    const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+    const plans = [
+        {
+            id: "gratis",
+            name: "Grátis",
+            price: 0,
+            commission: 20,
+            icon: Zap,
+            color: "from-slate-500 to-slate-600",
+            bgGlow: "bg-slate-500/20",
+            features: [
+                { text: "Perfil básico no Hub", included: true },
+                { text: "Até 10 aulas/mês", included: true },
+                { text: "Suporte por email", included: true },
+                { text: "Destaque na busca", included: false },
+                { text: "Selo Elite", included: false },
+                { text: "Estatísticas avançadas", included: false },
+            ]
+        },
+        {
+            id: "prata",
+            name: "Prata",
+            price: 99,
+            commission: 15,
+            icon: Star,
+            color: "from-slate-400 to-slate-500",
+            bgGlow: "bg-slate-400/30",
+            features: [
+                { text: "Perfil destacado", included: true },
+                { text: "Aulas ilimitadas", included: true },
+                { text: "Suporte prioritário", included: true },
+                { text: "Estatísticas básicas", included: true },
+                { text: "Selo verificado", included: true },
+                { text: "Selo Elite", included: false },
+            ]
+        },
+        {
+            id: "ouro",
+            name: "Ouro",
+            price: 199,
+            commission: 10,
+            icon: Crown,
+            color: "from-amber-400 to-yellow-500",
+            bgGlow: "bg-amber-500/40",
+            popular: true,
+            features: [
+                { text: "Selo Elite dourado", included: true },
+                { text: "Destaque #1 na busca", included: true },
+                { text: "Aulas ilimitadas", included: true },
+                { text: "Estatísticas avançadas", included: true },
+                { text: "Suporte VIP 24/7", included: true },
+                { text: "Menor comissão (10%)", included: true },
+            ]
+        }
+    ];
+
     return (
-        <div className="min-h-screen bg-gradient-to-b from-secondary via-white to-secondary pt-20">
-            {/* Hero with animated gradient */}
-            <section className="relative py-20 overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-indigo-900" />
-                <div className="absolute inset-0 opacity-30">
-                    <div className="absolute top-20 left-10 w-72 h-72 bg-success/30 rounded-full blur-3xl animate-pulse" />
-                    <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-3xl" />
-                </div>
+        <div ref={containerRef} className="min-h-screen bg-[#0a0a0f] text-white overflow-hidden">
+            {/* Animated Background */}
+            <div className="fixed inset-0 pointer-events-none">
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,0.15),transparent_50%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,rgba(168,85,247,0.15),transparent_50%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(34,197,94,0.1),transparent_50%)]" />
 
-                <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ type: "spring", stiffness: 100 }}
-                    >
-                        <Badge variant="elite" className="mb-6 px-4 py-2">
-                            <Sparkles className="w-4 h-4 mr-2" />
-                            Planos para Instrutores
-                        </Badge>
-                    </motion.div>
+                {/* Floating orbs */}
+                <motion.div
+                    animate={{
+                        y: [0, -30, 0],
+                        x: [0, 20, 0],
+                        scale: [1, 1.1, 1]
+                    }}
+                    transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl"
+                />
+                <motion.div
+                    animate={{
+                        y: [0, 40, 0],
+                        x: [0, -30, 0],
+                        scale: [1, 1.2, 1]
+                    }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                    className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/20 rounded-full blur-3xl"
+                />
+                <motion.div
+                    animate={{
+                        y: [0, -50, 0],
+                        scale: [1, 1.15, 1]
+                    }}
+                    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+                    className="absolute top-1/2 right-1/3 w-72 h-72 bg-amber-500/15 rounded-full blur-3xl"
+                />
+            </div>
 
-                    <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6"
-                    >
-                        Quanto melhor seu plano,{" "}
-                        <span className="bg-gradient-to-r from-success to-emerald-300 bg-clip-text text-transparent">
-                            menor sua taxa
-                        </span>
-                    </motion.h1>
+            {/* Hero Section */}
+            <section className="relative min-h-screen flex items-center justify-center pt-20">
+                <motion.div style={{ y: y1, opacity }} className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center max-w-5xl mx-auto px-4">
+                        {/* Badge */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.6 }}
+                            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500/20 to-yellow-500/20 border border-amber-500/30 rounded-full mb-8 backdrop-blur-sm"
+                        >
+                            <Crown className="w-5 h-5 text-amber-400" />
+                            <span className="text-amber-300 font-semibold">Planos para Instrutores Elite</span>
+                        </motion.div>
 
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-xl text-white/80 max-w-2xl mx-auto"
-                    >
-                        Escolha o plano ideal e maximize seus ganhos como instrutor
-                    </motion.p>
-                </div>
+                        {/* Main Title */}
+                        <motion.h1
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            className="text-5xl md:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
+                        >
+                            <span className="bg-gradient-to-r from-white via-white to-white/60 bg-clip-text text-transparent">
+                                Quanto maior seu plano,
+                            </span>
+                            <br />
+                            <span className="bg-gradient-to-r from-emerald-400 via-green-400 to-teal-400 bg-clip-text text-transparent">
+                                maior seu lucro
+                            </span>
+                        </motion.h1>
+
+                        {/* Subtitle */}
+                        <motion.p
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8, delay: 0.4 }}
+                            className="text-xl md:text-2xl text-white/60 max-w-2xl mx-auto mb-12"
+                        >
+                            Reduza sua taxa de comissão e apareça no topo das buscas.
+                            Mais alunos, mais aulas, mais dinheiro no bolso.
+                        </motion.p>
+
+                        {/* Scroll indicator */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 1 }}
+                            className="flex flex-col items-center gap-2"
+                        >
+                            <span className="text-white/40 text-sm">Role para ver os planos</span>
+                            <motion.div
+                                animate={{ y: [0, 10, 0] }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                                className="w-6 h-10 border-2 border-white/20 rounded-full flex items-start justify-center p-2"
+                            >
+                                <motion.div
+                                    animate={{ y: [0, 12, 0] }}
+                                    transition={{ duration: 2, repeat: Infinity }}
+                                    className="w-1.5 h-1.5 bg-white/60 rounded-full"
+                                />
+                            </motion.div>
+                        </motion.div>
+                    </div>
+                </motion.div>
             </section>
 
-            {/* Plans */}
-            <section className="py-20 -mt-10">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        className="grid grid-cols-1 md:grid-cols-3 gap-8"
-                    >
-                        {planos.map((plano, index) => {
-                            const isElite = plano.id === "ouro";
-                            return (
-                                <motion.div
-                                    key={plano.id}
-                                    variants={itemVariants}
-                                    whileHover={{ y: -12, scale: 1.02 }}
-                                    className={`relative bg-card rounded-3xl border p-8 flex flex-col transition-all duration-300 ${isElite
-                                            ? "border-amber-300/50 shadow-2xl shadow-amber-500/20"
-                                            : "border-border/50 shadow-xl hover:shadow-2xl"
-                                        }`}
-                                >
-                                    {/* Glow effect for Elite */}
-                                    {isElite && (
-                                        <>
-                                            <div className="absolute -inset-px bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 rounded-3xl opacity-20 animate-pulse" />
-                                            <div className="absolute -top-6 left-1/2 -translate-x-1/2">
-                                                <Badge variant="elite" className="flex items-center gap-1 shadow-lg px-4 py-2">
-                                                    <Crown className="w-4 h-4" />
-                                                    Mais Popular
-                                                </Badge>
-                                            </div>
-                                        </>
-                                    )}
-
-                                    <div className="relative text-center mb-8 pt-4">
-                                        <div className={`w-20 h-20 mx-auto mb-4 rounded-2xl flex items-center justify-center ${isElite
-                                                ? "bg-gradient-to-br from-amber-400 to-yellow-500"
-                                                : index === 0
-                                                    ? "bg-gradient-to-br from-gray-400 to-gray-500"
-                                                    : "bg-gradient-to-br from-slate-400 to-slate-500"
-                                            }`}>
-                                            {isElite ? (
-                                                <Crown className="w-10 h-10 text-amber-900" />
-                                            ) : index === 0 ? (
-                                                <Zap className="w-10 h-10 text-white" />
-                                            ) : (
-                                                <Star className="w-10 h-10 text-white" />
-                                            )}
-                                        </div>
-
-                                        <h3 className="text-2xl font-bold text-foreground mb-2">{plano.nome}</h3>
-
-                                        <div className="mt-4">
-                                            <span className="text-5xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-                                                R$ {plano.preco.toFixed(0)}
-                                            </span>
-                                            {plano.preco > 0 && (
-                                                <span className="text-muted-foreground">/mês</span>
-                                            )}
-                                        </div>
-
-                                        <motion.div
-                                            whileHover={{ scale: 1.05 }}
-                                            className={`mt-4 py-3 px-5 rounded-xl inline-block ${isElite ? "bg-gradient-to-r from-success/20 to-emerald-500/20" : "bg-success/10"
-                                                }`}
-                                        >
-                                            <p className="text-success font-bold text-xl">
-                                                {plano.taxaComissao}% comissão
-                                            </p>
-                                        </motion.div>
-                                    </div>
-
-                                    <ul className="space-y-4 flex-1 mb-8">
-                                        {plano.recursos.map((recurso, i) => (
-                                            <motion.li
-                                                key={recurso}
-                                                className="flex items-start gap-3"
-                                                initial={{ opacity: 0, x: -20 }}
-                                                whileInView={{ opacity: 1, x: 0 }}
-                                                transition={{ delay: i * 0.1 }}
-                                            >
-                                                <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${isElite ? "bg-gradient-to-r from-amber-400 to-yellow-500" : "bg-success"
-                                                    }`}>
-                                                    <Check className="w-4 h-4 text-white" />
-                                                </div>
-                                                <span className="text-foreground">{recurso}</span>
-                                            </motion.li>
-                                        ))}
-                                    </ul>
-
-                                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                                        <Link
-                                            href="/para-instrutores/cadastro"
-                                            className={`block w-full py-4 rounded-xl font-bold text-center transition-all shadow-lg ${isElite
-                                                    ? "bg-gradient-to-r from-amber-400 to-yellow-500 text-amber-900 shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40"
-                                                    : "bg-gradient-to-r from-primary to-primary/80 text-white shadow-primary/30 hover:shadow-xl hover:shadow-primary/40"
-                                                }`}
-                                        >
-                                            Começar Agora
-                                        </Link>
-                                    </motion.div>
-                                </motion.div>
-                            );
-                        })}
-                    </motion.div>
-
-                    {/* Comparison Table */}
+            {/* Plans Section */}
+            <section className="relative py-32">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    {/* Section Header */}
                     <motion.div
                         initial={{ opacity: 0, y: 40 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ delay: 0.3 }}
-                        className="mt-20 bg-card rounded-3xl border border-border/50 overflow-hidden shadow-2xl"
+                        className="text-center mb-20"
                     >
-                        <div className="p-8 bg-gradient-to-r from-primary/5 to-primary/10 border-b border-border/50">
-                            <h2 className="text-2xl font-bold text-foreground flex items-center gap-3">
-                                <BarChart2 className="w-6 h-6 text-primary" />
-                                Comparativo Completo
-                            </h2>
+                        <h2 className="text-4xl md:text-5xl font-bold mb-6">
+                            Escolha seu <span className="bg-gradient-to-r from-amber-400 to-yellow-400 bg-clip-text text-transparent">plano ideal</span>
+                        </h2>
+                        <p className="text-white/50 text-lg max-w-xl mx-auto">
+                            Comece gratuitamente e faça upgrade quando quiser
+                        </p>
+                    </motion.div>
+
+                    {/* Plans Grid */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-6">
+                        {plans.map((plan, index) => {
+                            const Icon = plan.icon;
+                            return (
+                                <motion.div
+                                    key={plan.id}
+                                    initial={{ opacity: 0, y: 60 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.6, delay: index * 0.15 }}
+                                    whileHover={{ y: -12, transition: { duration: 0.3 } }}
+                                    className={`relative group ${plan.popular ? "lg:-mt-8 lg:mb-8" : ""}`}
+                                >
+                                    {/* Popular Badge */}
+                                    {plan.popular && (
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            whileInView={{ opacity: 1, scale: 1 }}
+                                            className="absolute -top-5 left-1/2 -translate-x-1/2 z-20"
+                                        >
+                                            <div className="px-6 py-2 bg-gradient-to-r from-amber-400 to-yellow-500 rounded-full text-amber-900 font-bold text-sm flex items-center gap-2 shadow-lg shadow-amber-500/30">
+                                                <Sparkles className="w-4 h-4" />
+                                                Mais Popular
+                                            </div>
+                                        </motion.div>
+                                    )}
+
+                                    {/* Card */}
+                                    <div className={`relative h-full rounded-3xl border ${plan.popular
+                                            ? "border-amber-500/50 bg-gradient-to-b from-amber-500/10 to-transparent"
+                                            : "border-white/10 bg-white/5"
+                                        } backdrop-blur-xl overflow-hidden transition-all duration-300 group-hover:border-white/20`}>
+
+                                        {/* Glow effect */}
+                                        <div className={`absolute inset-0 ${plan.bgGlow} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`} />
+
+                                        {/* Content */}
+                                        <div className="relative p-8 lg:p-10">
+                                            {/* Icon & Name */}
+                                            <div className="flex items-center gap-4 mb-8">
+                                                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${plan.color} flex items-center justify-center shadow-lg`}>
+                                                    <Icon className="w-8 h-8 text-white" />
+                                                </div>
+                                                <div>
+                                                    <h3 className="text-2xl font-bold text-white">{plan.name}</h3>
+                                                    <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold mt-1 ${plan.popular
+                                                            ? "bg-emerald-500/20 text-emerald-400"
+                                                            : "bg-white/10 text-white/70"
+                                                        }`}>
+                                                        <TrendingUp className="w-3 h-3" />
+                                                        {plan.commission}% comissão
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Price */}
+                                            <div className="mb-8">
+                                                <div className="flex items-end gap-1">
+                                                    <span className="text-white/50 text-2xl">R$</span>
+                                                    <span className="text-6xl font-bold text-white tracking-tight">{plan.price}</span>
+                                                    {plan.price > 0 && <span className="text-white/50 text-lg mb-2">/mês</span>}
+                                                </div>
+                                            </div>
+
+                                            {/* Features */}
+                                            <ul className="space-y-4 mb-10">
+                                                {plan.features.map((feature, i) => (
+                                                    <motion.li
+                                                        key={feature.text}
+                                                        initial={{ opacity: 0, x: -10 }}
+                                                        whileInView={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: 0.3 + i * 0.05 }}
+                                                        className="flex items-center gap-3"
+                                                    >
+                                                        {feature.included ? (
+                                                            <div className={`w-6 h-6 rounded-full flex items-center justify-center ${plan.popular ? "bg-emerald-500" : "bg-white/20"
+                                                                }`}>
+                                                                <Check className="w-4 h-4 text-white" />
+                                                            </div>
+                                                        ) : (
+                                                            <div className="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center">
+                                                                <X className="w-4 h-4 text-white/30" />
+                                                            </div>
+                                                        )}
+                                                        <span className={feature.included ? "text-white" : "text-white/30"}>
+                                                            {feature.text}
+                                                        </span>
+                                                    </motion.li>
+                                                ))}
+                                            </ul>
+
+                                            {/* CTA Button */}
+                                            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                                                <Link
+                                                    href="/para-instrutores/cadastro"
+                                                    className={`block w-full py-4 rounded-xl font-bold text-center transition-all ${plan.popular
+                                                            ? "bg-gradient-to-r from-amber-400 to-yellow-500 text-amber-900 shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40"
+                                                            : "bg-white/10 text-white hover:bg-white/20"
+                                                        }`}
+                                                >
+                                                    Começar Agora
+                                                </Link>
+                                            </motion.div>
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+                </div>
+            </section>
+
+            {/* Comparison Table */}
+            <section className="relative py-32 overflow-hidden">
+                <motion.div style={{ y: y2 }} className="absolute inset-0">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-3xl" />
+                </motion.div>
+
+                <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl overflow-hidden"
+                    >
+                        <div className="p-8 border-b border-white/10 flex items-center gap-4">
+                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center">
+                                <BarChart2 className="w-6 h-6 text-white" />
+                            </div>
+                            <div>
+                                <h3 className="text-2xl font-bold text-white">Comparativo Detalhado</h3>
+                                <p className="text-white/50">Veja todas as diferenças entre os planos</p>
+                            </div>
                         </div>
+
                         <div className="overflow-x-auto">
                             <table className="w-full">
                                 <thead>
-                                    <tr className="bg-muted/30">
-                                        <th className="text-left px-8 py-5 font-bold text-foreground">Recurso</th>
-                                        <th className="text-center px-6 py-5 font-bold text-foreground">Grátis</th>
-                                        <th className="text-center px-6 py-5 font-bold text-foreground">Prata</th>
-                                        <th className="text-center px-6 py-5 font-bold text-amber-500 bg-amber-500/5">
-                                            <span className="flex items-center justify-center gap-2">
-                                                <Crown className="w-5 h-5" />
+                                    <tr className="border-b border-white/10">
+                                        <th className="text-left p-6 text-white/70 font-medium">Recurso</th>
+                                        <th className="p-6 text-center text-white/70 font-medium">Grátis</th>
+                                        <th className="p-6 text-center text-white/70 font-medium">Prata</th>
+                                        <th className="p-6 text-center bg-amber-500/10">
+                                            <span className="flex items-center justify-center gap-2 text-amber-400 font-bold">
+                                                <Crown className="w-4 h-4" />
                                                 Ouro
                                             </span>
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-border/50">
-                                    <tr className="hover:bg-muted/20 transition-colors">
-                                        <td className="px-8 py-5 text-foreground flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                                                <Zap className="w-5 h-5 text-primary" />
-                                            </div>
-                                            Taxa de Comissão
-                                        </td>
-                                        <td className="px-6 py-5 text-center font-bold text-red-500 text-lg">20%</td>
-                                        <td className="px-6 py-5 text-center font-bold text-amber-500 text-lg">15%</td>
-                                        <td className="px-6 py-5 text-center font-bold text-success text-xl bg-amber-500/5">10%</td>
-                                    </tr>
-                                    <tr className="hover:bg-muted/20 transition-colors">
-                                        <td className="px-8 py-5 text-foreground flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                                                <TrendingUp className="w-5 h-5 text-primary" />
-                                            </div>
-                                            Aulas por Mês
-                                        </td>
-                                        <td className="px-6 py-5 text-center text-muted-foreground">Até 10</td>
-                                        <td className="px-6 py-5 text-center text-foreground font-medium">Ilimitadas</td>
-                                        <td className="px-6 py-5 text-center text-foreground font-medium bg-amber-500/5">Ilimitadas</td>
-                                    </tr>
-                                    <tr className="hover:bg-muted/20 transition-colors">
-                                        <td className="px-8 py-5 text-foreground flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                                                <Star className="w-5 h-5 text-primary" />
-                                            </div>
-                                            Destaque na Busca
-                                        </td>
-                                        <td className="px-6 py-5 text-center"><X className="w-6 h-6 text-muted-foreground/50 mx-auto" /></td>
-                                        <td className="px-6 py-5 text-center"><X className="w-6 h-6 text-muted-foreground/50 mx-auto" /></td>
-                                        <td className="px-6 py-5 text-center bg-amber-500/5"><Check className="w-6 h-6 text-success mx-auto" /></td>
-                                    </tr>
-                                    <tr className="hover:bg-muted/20 transition-colors">
-                                        <td className="px-8 py-5 text-foreground flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center">
-                                                <Crown className="w-5 h-5 text-amber-500" />
-                                            </div>
-                                            Selo Elite
-                                        </td>
-                                        <td className="px-6 py-5 text-center"><X className="w-6 h-6 text-muted-foreground/50 mx-auto" /></td>
-                                        <td className="px-6 py-5 text-center"><X className="w-6 h-6 text-muted-foreground/50 mx-auto" /></td>
-                                        <td className="px-6 py-5 text-center bg-amber-500/5"><Check className="w-6 h-6 text-success mx-auto" /></td>
-                                    </tr>
-                                    <tr className="hover:bg-muted/20 transition-colors">
-                                        <td className="px-8 py-5 text-foreground flex items-center gap-3">
-                                            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-                                                <Shield className="w-5 h-5 text-primary" />
-                                            </div>
-                                            Suporte Prioritário
-                                        </td>
-                                        <td className="px-6 py-5 text-center"><X className="w-6 h-6 text-muted-foreground/50 mx-auto" /></td>
-                                        <td className="px-6 py-5 text-center"><Check className="w-6 h-6 text-success mx-auto" /></td>
-                                        <td className="px-6 py-5 text-center bg-amber-500/5"><Check className="w-6 h-6 text-success mx-auto" /></td>
-                                    </tr>
+                                <tbody className="divide-y divide-white/5">
+                                    {[
+                                        { feature: "Taxa de Comissão", free: "20%", silver: "15%", gold: "10%", highlight: true },
+                                        { feature: "Aulas por Mês", free: "Até 10", silver: "Ilimitadas", gold: "Ilimitadas" },
+                                        { feature: "Destaque na Busca", free: false, silver: false, gold: true },
+                                        { feature: "Selo Elite", free: false, silver: false, gold: true },
+                                        { feature: "Estatísticas", free: "Básicas", silver: "Básicas", gold: "Avançadas" },
+                                        { feature: "Suporte", free: "Email", silver: "Prioritário", gold: "VIP 24/7" },
+                                    ].map((row, i) => (
+                                        <motion.tr
+                                            key={row.feature}
+                                            initial={{ opacity: 0 }}
+                                            whileInView={{ opacity: 1 }}
+                                            transition={{ delay: i * 0.05 }}
+                                            className="hover:bg-white/5 transition-colors"
+                                        >
+                                            <td className="p-6 text-white font-medium">{row.feature}</td>
+                                            <td className="p-6 text-center">
+                                                {typeof row.free === "boolean" ? (
+                                                    row.free ? <Check className="w-5 h-5 text-emerald-400 mx-auto" /> : <X className="w-5 h-5 text-white/20 mx-auto" />
+                                                ) : (
+                                                    <span className={row.highlight ? "text-red-400 font-bold" : "text-white/70"}>{row.free}</span>
+                                                )}
+                                            </td>
+                                            <td className="p-6 text-center">
+                                                {typeof row.silver === "boolean" ? (
+                                                    row.silver ? <Check className="w-5 h-5 text-emerald-400 mx-auto" /> : <X className="w-5 h-5 text-white/20 mx-auto" />
+                                                ) : (
+                                                    <span className={row.highlight ? "text-amber-400 font-bold" : "text-white/70"}>{row.silver}</span>
+                                                )}
+                                            </td>
+                                            <td className="p-6 text-center bg-amber-500/5">
+                                                {typeof row.gold === "boolean" ? (
+                                                    row.gold ? <Check className="w-5 h-5 text-emerald-400 mx-auto" /> : <X className="w-5 h-5 text-white/20 mx-auto" />
+                                                ) : (
+                                                    <span className={row.highlight ? "text-emerald-400 font-bold text-lg" : "text-white"}>{row.gold}</span>
+                                                )}
+                                            </td>
+                                        </motion.tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
@@ -277,37 +407,42 @@ export default function PlanosInstrutorPage() {
                 </div>
             </section>
 
-            {/* CTA */}
-            <section className="py-20">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            {/* CTA Section */}
+            <section className="relative py-32">
+                <div className="max-w-4xl mx-auto px-4 text-center">
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        className="relative rounded-3xl overflow-hidden"
+                        className="relative"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/90 to-indigo-900" />
-                        <div className="absolute inset-0 opacity-30">
-                            <div className="absolute top-10 left-10 w-40 h-40 bg-success/40 rounded-full blur-3xl" />
-                            <div className="absolute bottom-10 right-10 w-60 h-60 bg-purple-500/30 rounded-full blur-3xl" />
-                        </div>
+                        {/* Background glow */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 via-blue-500/20 to-purple-500/20 rounded-3xl blur-3xl" />
 
-                        <div className="relative p-12 md:p-16">
-                            <Sparkles className="w-12 h-12 text-amber-400 mx-auto mb-6" />
-                            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                                Comece Gratuitamente
+                        <div className="relative rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-12 md:p-20">
+                            <motion.div
+                                initial={{ scale: 0 }}
+                                whileInView={{ scale: 1 }}
+                                transition={{ type: "spring", delay: 0.2 }}
+                            >
+                                <Rocket className="w-16 h-16 text-emerald-400 mx-auto mb-8" />
+                            </motion.div>
+
+                            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                                Comece hoje mesmo
                             </h2>
-                            <p className="text-white/80 mb-8 text-lg">
-                                Teste o plano Grátis e faça upgrade quando quiser. Sem compromisso.
+                            <p className="text-white/60 text-xl mb-10 max-w-lg mx-auto">
+                                Teste grátis e faça upgrade quando quiser. Sem compromisso.
                             </p>
+
                             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                                 <Link
                                     href="/para-instrutores/cadastro"
-                                    className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-success to-emerald-400 text-white rounded-xl font-bold text-lg shadow-xl shadow-success/30 hover:shadow-2xl hover:shadow-success/40 transition-all"
+                                    className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-emerald-400 to-teal-400 text-white rounded-2xl font-bold text-lg shadow-2xl shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all"
                                 >
-                                    <Sparkles className="w-5 h-5" />
-                                    Criar Minha Conta
-                                    <ArrowRight className="w-5 h-5" />
+                                    <Sparkles className="w-6 h-6" />
+                                    Criar Conta Gratuita
+                                    <ArrowRight className="w-6 h-6" />
                                 </Link>
                             </motion.div>
                         </div>
