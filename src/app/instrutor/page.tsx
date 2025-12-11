@@ -2,270 +2,142 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import {
-    Wallet,
-    Calendar,
-    TrendingUp,
-    DollarSign,
-    Clock,
-    CheckCircle2,
-    Crown,
-    Star,
-    ArrowUpRight
-} from "lucide-react";
 import Link from "next/link";
-import { Badge } from "@/components/ui/Badge";
 import {
-    getInstrutorById,
-    getSaldoDisponivel,
-    getGanhosBrutosMes,
-    getProximasAulas,
-    getTransacoesInstrutor
-} from "@/data/mockData";
+    Calendar,
+    DollarSign,
+    Users,
+    Star,
+    TrendingUp,
+    MessageSquare,
+    Settings,
+    Bell,
+    ChevronRight,
+    Clock
+} from "lucide-react";
 
-// Mock logged instructor ID
-const INSTRUCTOR_ID = "1";
-
-export default function InstructorDashboardPage() {
-    const instructor = getInstrutorById(INSTRUCTOR_ID)!;
-    const saldoDisponivel = getSaldoDisponivel(INSTRUCTOR_ID);
-    const ganhosBrutosMes = getGanhosBrutosMes(INSTRUCTOR_ID);
-    const proximasAulas = getProximasAulas(INSTRUCTOR_ID);
-    const transacoes = getTransacoesInstrutor(INSTRUCTOR_ID);
-
-    const isElite = instructor.plano === "ouro";
-
-    const stats = [
-        {
-            label: "Saldo Disponível",
-            value: `R$ ${saldoDisponivel.toFixed(2).replace(".", ",")}`,
-            icon: Wallet,
-            color: "text-success",
-            bgColor: "bg-success/10",
-            description: "Pronto para saque",
-        },
-        {
-            label: "Próximas Aulas",
-            value: proximasAulas.length.toString(),
-            icon: Calendar,
-            color: "text-primary",
-            bgColor: "bg-primary/10",
-            description: "Agendadas",
-        },
-        {
-            label: "Ganhos Brutos (Mês)",
-            value: `R$ ${ganhosBrutosMes.toFixed(2).replace(".", ",")}`,
-            icon: TrendingUp,
-            color: "text-amber-500",
-            bgColor: "bg-amber-500/10",
-            description: "Dezembro 2024",
-        },
-    ];
-
+export default function InstrutorDashboard() {
     return (
-        <div className="max-w-6xl mx-auto">
-            {/* Welcome Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-                <div>
-                    <h1 className="text-2xl font-bold text-foreground mb-1">
-                        Olá, {instructor.nome.split(" ")[0]}! 👋
-                    </h1>
-                    <p className="text-muted-foreground">
-                        Aqui está o resumo da sua conta hoje.
-                    </p>
+        <div className="min-h-screen bg-[#0a0a0f] text-white p-6 md:p-8">
+            <div className="max-w-7xl mx-auto">
+                {/* Header */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                    <div>
+                        <h1 className="text-3xl font-bold mb-2">Painel do Instrutor</h1>
+                        <p className="text-gray-400">Bem-vindo de volta, Carlos Silva</p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <button className="p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors relative">
+                            <Bell className="w-6 h-6 text-gray-400" />
+                            <span className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full border-2 border-[#0a0a0f]"></span>
+                        </button>
+                        <div className="flex items-center gap-3 bg-white/5 py-2 px-4 rounded-full border border-white/10">
+                            <div className="w-8 h-8 bg-gradient-to-br from-amber-400 to-yellow-600 rounded-full flex items-center justify-center">
+                                <Star className="w-4 h-4 text-white fill-current" />
+                            </div>
+                            <span className="font-bold text-amber-400">Elite</span>
+                        </div>
+                    </div>
                 </div>
-                {isElite ? (
-                    <Badge variant="elite" className="flex items-center gap-1 px-4 py-2">
-                        <Crown className="w-4 h-4" />
-                        Plano Elite
-                    </Badge>
-                ) : (
-                    <Link href="/instrutor/planos">
-                        <Badge variant="outline" className="flex items-center gap-1 px-4 py-2 hover:bg-muted cursor-pointer">
-                            <Crown className="w-4 h-4 text-amber-500" />
-                            Upgrade para Elite
-                        </Badge>
-                    </Link>
-                )}
-            </div>
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                {stats.map((stat, index) => {
-                    const Icon = stat.icon;
-                    return (
+                {/* Stats Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    {[
+                        { label: "Receita Mensal", value: "R$ 4.250", icon: DollarSign, color: "text-emerald-400", bg: "bg-emerald-500/10", change: "+12%" },
+                        { label: "Aulas Realizadas", value: "48", icon: TrendingUp, color: "text-blue-400", bg: "bg-blue-500/10", change: "+8%" },
+                        { label: "Novos Alunos", value: "12", icon: Users, color: "text-purple-400", bg: "bg-purple-500/10", change: "+25%" },
+                        { label: "Avaliação", value: "4.9", icon: Star, color: "text-amber-400", bg: "bg-amber-500/10", change: "+0.2" },
+                    ].map((stat, i) => (
                         <motion.div
                             key={stat.label}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            className="bg-card rounded-xl border border-border p-6"
+                            transition={{ delay: i * 0.1 }}
+                            whileHover={{ y: -5 }}
+                            className="bg-white/5 border border-white/10 p-6 rounded-2xl cursor-default"
                         >
-                            <div className="flex items-center justify-between mb-4">
-                                <div className={`p-3 rounded-xl ${stat.bgColor}`}>
-                                    <Icon className={`w-6 h-6 ${stat.color}`} />
+                            <div className="flex justify-between items-start mb-4">
+                                <div className={`p-3 rounded-xl ${stat.bg}`}>
+                                    <stat.icon className={`w-6 h-6 ${stat.color}`} />
                                 </div>
-                                <span className="text-xs text-muted-foreground">{stat.description}</span>
+                                <span className={`text-xs font-bold px-2 py-1 rounded-full ${stat.bg} ${stat.color}`}>
+                                    {stat.change}
+                                </span>
                             </div>
-                            <p className="text-3xl font-bold text-foreground mb-1">{stat.value}</p>
-                            <p className="text-sm text-muted-foreground">{stat.label}</p>
+                            <h3 className="text-2xl font-bold mb-1">{stat.value}</h3>
+                            <p className="text-sm text-gray-400">{stat.label}</p>
                         </motion.div>
-                    );
-                })}
-            </div>
+                    ))}
+                </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* Próximas Aulas */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="bg-card rounded-xl border border-border p-6"
-                >
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-semibold text-foreground">Próximas Aulas</h2>
-                        <Link href="/instrutor/agenda" className="text-sm text-primary hover:underline flex items-center gap-1">
-                            Ver todas <ArrowUpRight className="w-4 h-4" />
-                        </Link>
+                {/* Quick Actions & Menu */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Main Actions */}
+                    <div className="lg:col-span-2 space-y-6">
+                        <h2 className="text-xl font-bold mb-4">Acesso Rápido</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <Link href="/instrutor/agenda" className="group">
+                                <div className="bg-gradient-to-br from-blue-600 to-blue-500 p-6 rounded-2xl shadow-lg shadow-blue-500/20 group-hover:shadow-blue-500/40 transition-all group-hover:-translate-y-1">
+                                    <Calendar className="w-8 h-8 text-white mb-4" />
+                                    <h3 className="text-xl font-bold text-white mb-2">Gerenciar Agenda</h3>
+                                    <p className="text-blue-100/80 text-sm">Configure seus horários disponíveis e turnos extras.</p>
+                                </div>
+                            </Link>
+                            <Link href="/minha-conta/financeiro" className="group">
+                                <div className="bg-white/5 border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-all group-hover:-translate-y-1">
+                                    <DollarSign className="w-8 h-8 text-emerald-400 mb-4" />
+                                    <h3 className="text-xl font-bold text-white mb-2">Financeiro</h3>
+                                    <p className="text-gray-400 text-sm">Ver extratos, saques e relatórios de ganhos.</p>
+                                </div>
+                            </Link>
+                            <Link href="/minha-conta/mensagens" className="group">
+                                <div className="bg-white/5 border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-all group-hover:-translate-y-1">
+                                    <MessageSquare className="w-8 h-8 text-purple-400 mb-4" />
+                                    <h3 className="text-xl font-bold text-white mb-2">Mensagens</h3>
+                                    <p className="text-gray-400 text-sm">Fale com seus alunos e suporte.</p>
+                                </div>
+                            </Link>
+                            <Link href="/minha-conta/configuracoes" className="group">
+                                <div className="bg-white/5 border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-all group-hover:-translate-y-1">
+                                    <Settings className="w-8 h-8 text-gray-400 mb-4" />
+                                    <h3 className="text-xl font-bold text-white mb-2">Configurações</h3>
+                                    <p className="text-gray-400 text-sm">Edite seu perfil e preferências da conta.</p>
+                                </div>
+                            </Link>
+                        </div>
                     </div>
 
-                    {proximasAulas.length === 0 ? (
-                        <div className="text-center py-8 text-muted-foreground">
-                            <Calendar className="w-10 h-10 mx-auto mb-2 opacity-50" />
-                            <p>Nenhuma aula agendada</p>
-                        </div>
-                    ) : (
+                    {/* Next Classes */}
+                    <div className="bg-white/5 border border-white/10 rounded-3xl p-6">
+                        <h2 className="text-xl font-bold mb-6">Próximas Aulas</h2>
                         <div className="space-y-4">
-                            {proximasAulas.slice(0, 3).map((aula) => (
-                                <div
-                                    key={aula.id}
-                                    className="flex items-center gap-4 p-3 bg-muted/50 rounded-lg"
-                                >
-                                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex flex-col items-center justify-center text-primary">
-                                        <span className="text-xs font-medium">
-                                            {new Date(aula.data).toLocaleDateString("pt-BR", { weekday: "short" })}
-                                        </span>
-                                        <span className="text-lg font-bold">
-                                            {new Date(aula.data).getDate()}
-                                        </span>
+                            {[
+                                { name: "João Pedro", time: "14:00", type: "Baliza", day: "12", month: "DEZ" },
+                                { name: "Maria Santos", time: "16:00", type: "Direção", day: "12", month: "DEZ" },
+                                { name: "Lucas Oliveira", time: "09:00", type: "Prática", day: "13", month: "DEZ" },
+                            ].map((aula, i) => (
+                                <div key={i} className="flex items-center gap-4 p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
+                                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-lg flex flex-col items-center justify-center text-center border border-white/10">
+                                        <span className="text-[10px] text-gray-400 uppercase">{aula.month}</span>
+                                        <span className="text-lg font-bold">{aula.day}</span>
                                     </div>
                                     <div className="flex-1">
-                                        <p className="font-medium text-foreground">
-                                            {aula.horario} - Aula de Direção
-                                        </p>
-                                        <p className="text-sm text-muted-foreground">{aula.endereco}</p>
-                                    </div>
-                                    <div className="text-right">
-                                        <Badge variant={aula.status === "confirmada" ? "active" : "pending"}>
-                                            {aula.status === "confirmada" ? "Confirmada" : "Aguardando"}
-                                        </Badge>
-                                        <p className="text-sm font-semibold text-success mt-1">
-                                            R$ {aula.valor.toFixed(2).replace(".", ",")}
+                                        <h4 className="font-bold">{aula.name}</h4>
+                                        <p className="text-sm text-gray-400 flex items-center gap-1">
+                                            <Clock className="w-3 h-3" />
+                                            {aula.time} - {aula.type}
                                         </p>
                                     </div>
+                                    <ChevronRight className="w-5 h-5 text-gray-500" />
                                 </div>
                             ))}
+                            <Link href="/instrutor/agenda" className="block w-full py-3 mt-4 text-sm font-medium text-blue-400 bg-blue-500/10 rounded-xl hover:bg-blue-500/20 transition-colors text-center">
+                                Ver Agenda Completa
+                            </Link>
                         </div>
-                    )}
-                </motion.div>
-
-                {/* Últimas Transações */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                    className="bg-card rounded-xl border border-border p-6"
-                >
-                    <div className="flex items-center justify-between mb-4">
-                        <h2 className="text-lg font-semibold text-foreground">Últimas Transações</h2>
-                        <Link href="/instrutor/financeiro" className="text-sm text-primary hover:underline flex items-center gap-1">
-                            Ver todas <ArrowUpRight className="w-4 h-4" />
-                        </Link>
                     </div>
-
-                    {transacoes.length === 0 ? (
-                        <div className="text-center py-8 text-muted-foreground">
-                            <DollarSign className="w-10 h-10 mx-auto mb-2 opacity-50" />
-                            <p>Nenhuma transação</p>
-                        </div>
-                    ) : (
-                        <div className="space-y-3">
-                            {transacoes.slice(0, 4).map((tx) => (
-                                <div
-                                    key={tx.id}
-                                    className="flex items-center justify-between py-3 border-b border-border last:border-0"
-                                >
-                                    <div className="flex items-center gap-3">
-                                        <div
-                                            className={`w-10 h-10 rounded-full flex items-center justify-center ${tx.status === "liberado" ? "bg-success/10" : "bg-amber-500/10"
-                                                }`}
-                                        >
-                                            {tx.status === "liberado" ? (
-                                                <CheckCircle2 className="w-5 h-5 text-success" />
-                                            ) : (
-                                                <Clock className="w-5 h-5 text-amber-500" />
-                                            )}
-                                        </div>
-                                        <div>
-                                            <p className="font-medium text-foreground text-sm">
-                                                Aula de Direção
-                                            </p>
-                                            <p className="text-xs text-muted-foreground">
-                                                {new Date(tx.criadoEm).toLocaleDateString("pt-BR")}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className="font-semibold text-success">
-                                            +R$ {tx.valorLiquido.toFixed(2).replace(".", ",")}
-                                        </p>
-                                        <p className="text-xs text-muted-foreground">
-                                            -{tx.taxaComissao}% comissão
-                                        </p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </motion.div>
+                </div>
             </div>
-
-            {/* Quick Actions */}
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4"
-            >
-                <Link
-                    href="/instrutor/financeiro"
-                    className="flex items-center gap-3 p-4 bg-success/10 rounded-xl hover:bg-success/20 transition-colors"
-                >
-                    <Wallet className="w-6 h-6 text-success" />
-                    <span className="font-medium text-foreground">Solicitar Saque</span>
-                </Link>
-                <Link
-                    href="/instrutor/planos"
-                    className="flex items-center gap-3 p-4 bg-amber-500/10 rounded-xl hover:bg-amber-500/20 transition-colors"
-                >
-                    <Crown className="w-6 h-6 text-amber-500" />
-                    <span className="font-medium text-foreground">Ver Planos</span>
-                </Link>
-                <Link
-                    href="/instrutor/perfil"
-                    className="flex items-center gap-3 p-4 bg-primary/10 rounded-xl hover:bg-primary/20 transition-colors"
-                >
-                    <Star className="w-6 h-6 text-primary" />
-                    <span className="font-medium text-foreground">Meu Perfil</span>
-                </Link>
-                <Link
-                    href="/instrutor/agenda"
-                    className="flex items-center gap-3 p-4 bg-purple-500/10 rounded-xl hover:bg-purple-500/20 transition-colors"
-                >
-                    <Calendar className="w-6 h-6 text-purple-500" />
-                    <span className="font-medium text-foreground">Minha Agenda</span>
-                </Link>
-            </motion.div>
         </div>
     );
 }

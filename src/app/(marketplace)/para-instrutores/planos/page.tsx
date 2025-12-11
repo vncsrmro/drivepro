@@ -9,17 +9,11 @@ import {
     X,
     Star,
     Zap,
-    Shield,
     BarChart2,
     ArrowRight,
     Sparkles,
     TrendingUp,
-    Rocket,
-    Diamond,
-    Award,
-    Users,
-    CircleDollarSign,
-    ChevronRight
+    Rocket
 } from "lucide-react";
 
 export default function PlanosInstrutorPage() {
@@ -166,27 +160,6 @@ export default function PlanosInstrutorPage() {
                             Reduza sua taxa de comissão e apareça no topo das buscas.
                             Mais alunos, mais aulas, mais dinheiro no bolso.
                         </motion.p>
-
-                        {/* Scroll indicator */}
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 1 }}
-                            className="flex flex-col items-center gap-2"
-                        >
-                            <span className="text-white/40 text-sm">Role para ver os planos</span>
-                            <motion.div
-                                animate={{ y: [0, 10, 0] }}
-                                transition={{ duration: 2, repeat: Infinity }}
-                                className="w-6 h-10 border-2 border-white/20 rounded-full flex items-start justify-center p-2"
-                            >
-                                <motion.div
-                                    animate={{ y: [0, 12, 0] }}
-                                    transition={{ duration: 2, repeat: Infinity }}
-                                    className="w-1.5 h-1.5 bg-white/60 rounded-full"
-                                />
-                            </motion.div>
-                        </motion.div>
                     </div>
                 </motion.div>
             </section>
@@ -210,9 +183,10 @@ export default function PlanosInstrutorPage() {
                     </motion.div>
 
                     {/* Plans Grid */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-6 items-stretch">
                         {plans.map((plan, index) => {
                             const Icon = plan.icon;
+                            // Reset margins, make height full
                             return (
                                 <motion.div
                                     key={plan.id}
@@ -221,7 +195,7 @@ export default function PlanosInstrutorPage() {
                                     viewport={{ once: true }}
                                     transition={{ duration: 0.6, delay: index * 0.15 }}
                                     whileHover={{ y: -12, transition: { duration: 0.3 } }}
-                                    className={`relative group ${plan.popular ? "lg:-mt-8 lg:mb-8" : ""}`}
+                                    className={`relative group h-full`}
                                 >
                                     {/* Popular Badge */}
                                     {plan.popular && (
@@ -238,16 +212,16 @@ export default function PlanosInstrutorPage() {
                                     )}
 
                                     {/* Card */}
-                                    <div className={`relative h-full rounded-3xl border ${plan.popular
-                                            ? "border-amber-500/50 bg-gradient-to-b from-amber-500/10 to-transparent"
-                                            : "border-white/10 bg-white/5"
+                                    <div className={`relative h-full flex flex-col rounded-3xl border ${plan.popular
+                                        ? "border-amber-500/50 bg-gradient-to-b from-amber-500/10 to-transparent"
+                                        : "border-white/10 bg-white/5"
                                         } backdrop-blur-xl overflow-hidden transition-all duration-300 group-hover:border-white/20`}>
 
                                         {/* Glow effect */}
                                         <div className={`absolute inset-0 ${plan.bgGlow} opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl`} />
 
                                         {/* Content */}
-                                        <div className="relative p-8 lg:p-10">
+                                        <div className="relative p-8 lg:p-10 flex flex-col h-full">
                                             {/* Icon & Name */}
                                             <div className="flex items-center gap-4 mb-8">
                                                 <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${plan.color} flex items-center justify-center shadow-lg`}>
@@ -256,8 +230,8 @@ export default function PlanosInstrutorPage() {
                                                 <div>
                                                     <h3 className="text-2xl font-bold text-white">{plan.name}</h3>
                                                     <div className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold mt-1 ${plan.popular
-                                                            ? "bg-emerald-500/20 text-emerald-400"
-                                                            : "bg-white/10 text-white/70"
+                                                        ? "bg-emerald-500/20 text-emerald-400"
+                                                        : "bg-white/10 text-white/70"
                                                         }`}>
                                                         <TrendingUp className="w-3 h-3" />
                                                         {plan.commission}% comissão
@@ -275,7 +249,7 @@ export default function PlanosInstrutorPage() {
                                             </div>
 
                                             {/* Features */}
-                                            <ul className="space-y-4 mb-10">
+                                            <ul className="space-y-4 mb-10 flex-1">
                                                 {plan.features.map((feature, i) => (
                                                     <motion.li
                                                         key={feature.text}
@@ -302,12 +276,12 @@ export default function PlanosInstrutorPage() {
                                             </ul>
 
                                             {/* CTA Button */}
-                                            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                                            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="mt-auto">
                                                 <Link
                                                     href="/para-instrutores/cadastro"
                                                     className={`block w-full py-4 rounded-xl font-bold text-center transition-all ${plan.popular
-                                                            ? "bg-gradient-to-r from-amber-400 to-yellow-500 text-amber-900 shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40"
-                                                            : "bg-white/10 text-white hover:bg-white/20"
+                                                        ? "bg-gradient-to-r from-amber-400 to-yellow-500 text-amber-900 shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40"
+                                                        : "bg-white/10 text-white hover:bg-white/20"
                                                         }`}
                                                 >
                                                     Começar Agora

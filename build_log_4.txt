@@ -1,0 +1,93 @@
+﻿
+> drive-pro@0.1.0 build
+> next build
+
+   Ôû▓ Next.js 16.0.8 (Turbopack)
+   - Environments: .env.local
+
+node.exe :  ÔÜá The "middleware" file 
+convention is deprecated. Please use 
+"proxy" instead. Learn more: https://nextjs.
+org/docs/messages/middleware-to-proxy
+No linha:1 caractere:1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: 
+    ( ÔÜá The "middl...leware-to-proxy:Str  
+  ing) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommand 
+   Error
+ 
+   Creating an optimized production build ...
+ Ô£ô Compiled successfully in 3.3s
+   Running TypeScript ...
+Failed to compile.
+
+./src/app/(marketplace)/sobre/page.tsx:211:3
+7
+Type error: Type '{ hidden: { opacity: 
+number; y: number; }; visible: { opacity: 
+number; y: number; transition: { type: 
+string; stiffness: number; }; }; }' is not 
+assignable to type 'Variants'.
+  Property 'visible' is incompatible with 
+index signature.
+    Type '{ opacity: number; y: number; 
+transition: { type: string; stiffness: 
+number; }; }' is not assignable to type 
+'Variant'.
+      Type '{ opacity: number; y: number; 
+transition: { type: string; stiffness: 
+number; }; }' is not assignable to type 
+'TargetAndTransition'.
+        Type '{ opacity: number; y: number; 
+transition: { type: string; stiffness: 
+number; }; }' is not assignable to type '{ 
+transition?: Transition<any> | undefined; 
+transitionEnd?: ResolvedValues | undefined; 
+}'.
+          Types of property 'transition' 
+are incompatible.
+            Type '{ type: string; 
+stiffness: number; }' is not assignable to 
+type 'Transition<any> | undefined'.
+              Type '{ type: string; 
+stiffness: number; }' is not assignable to 
+type 'TransitionWithValueOverrides<any>'.
+                Type '{ type: string; 
+stiffness: number; }' is not assignable to 
+type 'ValueAnimationTransition<any>'.
+                  Types of property 'type' 
+are incompatible.
+                    Type 'string' is not 
+assignable to type 'AnimationGeneratorType 
+| undefined'.
+
+[0m [90m 209 |[39m                       
+          
+[33m<[39m[33mmotion[39m[33m.[39mdiv
+ [90m 210 |[39m                           
+          
+key[33m=[39m{value[33m.[39mtitle}
+[31m[1m>[22m[39m[90m 211 |[39m        
+                             
+variants[33m=[39m{itemVariants}
+ [90m     |[39m                           
+          [31m[1m^[22m[39m
+ [90m 212 |[39m                           
+          whileHover[33m=[39m{{ 
+y[33m:[39m 
+[33m-[39m[35m8[39m[33m,[39m 
+scale[33m:[39m [35m1.02[39m }}
+ [90m 213 |[39m                           
+          
+className[33m=[39m[32m"relative bg-card 
+rounded-3xl border border-border/50 p-8 
+shadow-xl hover:shadow-2xl transition-all 
+group text-center overflow-hidden"[39m
+ [90m 214 |[39m                           
+      [33m>[39m[0m
+Next.js build worker exited with code: 1 
+and signal: null
